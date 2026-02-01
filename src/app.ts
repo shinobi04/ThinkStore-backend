@@ -5,10 +5,12 @@ import authRoute from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
 import contentRoute from "./routes/content.route";
 import shareRouter from "./routes/link.routes";
+import helmet from "helmet";
 
 const app = express();
 
 app.set("trust proxy", 1);
+app.use(helmet());
 
 app.use(
   cors({
