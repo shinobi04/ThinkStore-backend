@@ -5,43 +5,50 @@ import { randomUUIDv7 } from "bun";
 export async function createLink(req: Request, res: Response) {
   const thisId = Number(req.params.thisId);
 
-  const user = await prisma.user.findUnique({
-    where: { id: req.user.id },
+  // 1️⃣ Find content owned by user
+  const content = await prisma.content.findFirst({
+    where: {
+      id: thisId,
+      userId: req.user.id,
+    },
     select: {
-      contents: true,
+      id: true,
+      link: true,
+      type: true,
+      title: true,
     },
   });
 
-  const content = user?.contents.filter((id) => id.id == thisId);
-  console.log(content);
-  if (content?.length == 0) {
+  if (!content) {
     return res.status(403).json({
       message: "You don't have this Neuron",
     });
   }
 
-  content;
+  // 2️⃣ If link already exists → return it
+  if (content.link) {
+    return res.status(200).json({
+      message: "Link already exists",
+      data: content,
+    });
+  }
 
-  const link = randomUUIDv7();
-  console.log(link);
+  // 3️⃣ Otherwise generate and save
+  const newLink = randomUUIDv7();
 
   const updatedContent = await prisma.content.update({
-    where: {
-      id: thisId,
-    },
-    data: {
-      link: link,
-    },
+    where: { id: content.id },
+    data: { link: newLink },
     select: {
       id: true,
-      type: true,
       link: true,
+      type: true,
       title: true,
     },
   });
 
-  res.status(200).json({
-    message: "Hit",
+  return res.status(200).json({
+    message: "Link created",
     data: updatedContent,
   });
 }
