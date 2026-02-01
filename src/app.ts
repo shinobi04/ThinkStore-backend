@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoute from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
 import contentRoute from "./routes/content.route";
+import shareRouter from "./routes/link.routes";
 
 const app = express();
 
@@ -29,5 +30,6 @@ app.get("/health", (req, res) => {
 
 app.use("/auth", authRoute);
 app.use("/api/v1", contentRoute);
+app.use("/api/v1/brain", shareRouter);
 
 export default app;
