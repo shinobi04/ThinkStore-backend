@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/db";
 import { randomUUIDv7 } from "bun";
-import { includes } from "zod";
 
 export async function createLink(req: Request, res: Response) {
   const thisId = Number(req.params.thisId);
@@ -72,11 +71,11 @@ export async function getLink(req: Request, res: Response) {
     },
   });
   if (content == null) {
-    res.status(404).json({
+    return res.status(404).json({
       message: "Share Link is Invalid",
     });
   }
-  res.status(200).json({
+  return res.status(200).json({
     message: "Success",
     data: content,
   });
