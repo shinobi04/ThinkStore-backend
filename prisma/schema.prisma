@@ -39,7 +39,7 @@ model RefreshToken {
 model Content{
   id Int @id @default(autoincrement())
   type Type @default(link) 
-  link String
+  link String?
   title String
   userId Int
   user User @relation(fields:[userId] , references :[id] , onDelete:Cascade)
