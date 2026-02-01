@@ -2,7 +2,11 @@ import { prisma } from "../config/db";
 import { UserSchema } from "../validation/userSchema";
 import { type Request, type Response } from "express";
 import bcrypt from "bcrypt";
-import { generateAccessToken, generateRefreshToken, hashToken } from "../utils/jwt";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  hashToken,
+} from "../utils/jwt";
 import { randomUUID } from "crypto";
 
 export async function loginController(req: Request, res: Response) {

@@ -17,6 +17,7 @@ model User {
   id            Int            @id @default(autoincrement())
   username      String         @unique
   password      String
+  contents      Content[]
   refreshTokens RefreshToken[]
   createdAt     DateTime       @default(now())
 }
@@ -33,4 +34,28 @@ model RefreshToken {
 
   @@index([userId])
   @@index([tokenHash])
+}
+
+model Content{
+  id Int @id @default(autoincrement())
+  type Type @default(link) 
+  link String
+  title String
+  userId Int
+  user User @relation(fields:[userId] , references :[id] , onDelete:Cascade)
+  tags Tag[]
+  createdAt DateTime @default(now())
+}
+
+model Tag{
+  id Int @id @default(autoincrement())
+  name String @unique
+  contents Content[]
+}
+
+enum Type {
+  document
+  tweet
+  youtube
+  link
 }
