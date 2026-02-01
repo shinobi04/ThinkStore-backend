@@ -23,7 +23,6 @@ export async function singupController(req: Request, res: Response) {
   });
   res.status(200).json({
     username,
-    hashedPass,
     message: "Success",
   });
 }
