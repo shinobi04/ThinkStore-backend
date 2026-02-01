@@ -6,7 +6,7 @@ import { prisma } from "../config/db";
 export async function authenticateToken(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
     const accessToken = req.cookies.accessToken;
@@ -16,7 +16,7 @@ export async function authenticateToken(
     }
 
     const decoded = verifyAccessToken(accessToken);
-    
+
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
     });

@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import authRoute from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
+import contentRoute from "./routes/content.route";
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 app.use(express.json());
@@ -27,5 +28,6 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/auth", authRoute);
+app.use("/api/v1", contentRoute);
 
 export default app;
