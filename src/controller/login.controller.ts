@@ -2,6 +2,7 @@ import { prisma } from "../config/db";
 import { UserSchema } from "../validation/userSchema";
 import { type Request, type Response } from "express";
 import bcrypt from "bcrypt";
+import { ZodError } from "zod";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -79,7 +80,13 @@ export async function loginController(req: Request, res: Response) {
         },
       });
   } catch (error) {
-    console.error(error);
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        message: "Validation failed",
+      });
+    }
+
+    console.error("Error in login:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }

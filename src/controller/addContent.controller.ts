@@ -1,32 +1,49 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/db";
+import { addContentSchema } from "../validation/contentSchema";
+import { ZodError } from "zod";
 
 export async function addContent(req: Request, res: Response) {
-  const { type, title, tags } = req.body;
-  const data = await prisma.content.create({
-    data: {
-      type,
-      title,
-      user: {
-        connect: { id: req.user.id },
+  try {
+    // Validate input
+    const validatedData = addContentSchema.parse(req.body);
+    const { type, title, tags } = validatedData;
+
+    const data = await prisma.content.create({
+      data: {
+        type,
+        title,
+        user: {
+          connect: { id: req.user!.id },
+        },
+        tags: {
+          connectOrCreate: tags.map((tag: string) => ({
+            where: {
+              name: tag.trim().toLowerCase(),
+            },
+            create: {
+              name: tag.trim().toLowerCase(),
+            },
+          })),
+        },
       },
-      tags: {
-        connectOrCreate: tags.map((tags: string) => ({
-          where: {
-            name: tags.trim().toLocaleLowerCase(),
-          },
-          create: {
-            name: tags.trim().toLocaleLowerCase(),
-          },
-        })),
+      include: {
+        tags: true,
       },
-    },
-    include: {
-      tags: true,
-    },
-  });
-  res.status(200).json({
-    message: "Content Created",
-    data: data,
-  });
+    });
+
+    res.status(201).json({
+      message: "Content created successfully",
+      data: data,
+    });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        message: "Validation failed",
+      });
+    }
+
+    console.error("Error in addContent:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 }

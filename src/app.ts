@@ -1,13 +1,23 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import authRoute from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
 import contentRoute from "./routes/content.route";
 import shareRouter from "./routes/link.routes";
-import helmet from "helmet";
 
 const app = express();
+
+// Rate limiting for auth endpoints
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 requests per windowMs
+  message: { message: "Too many requests, please try again later" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 app.set("trust proxy", 1);
 app.use(helmet());
@@ -21,7 +31,7 @@ app.use(
   }),
 );
 
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
 app.get("/health", (req, res) => {
@@ -29,6 +39,11 @@ app.get("/health", (req, res) => {
     message: "Health Good!!",
   });
 });
+
+// Apply rate limiting to auth endpoints
+app.use("/auth/login", authLimiter);
+app.use("/auth/signup", authLimiter);
+app.use("/auth/refresh", authLimiter);
 
 app.use("/auth", authRoute);
 app.use("/api/v1", contentRoute);
