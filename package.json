@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "thinkbox",
   "module": "index.ts",
   "type": "module",
   "private": true,
