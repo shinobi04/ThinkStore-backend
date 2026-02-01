@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { prisma } from "../config/db";
 
 const acctk = process.env.ACCESS_TOKEN_SECRET!;
 const refreshSecret = process.env.REFRESH_TOKEN_SECRET!;
@@ -31,11 +30,4 @@ export async function hashToken(token: string): Promise<string> {
 
 export async function verifyTokenHash(token: string, hash: string): Promise<boolean> {
   return bcrypt.compare(token, hash);
-}
-
-export async function isTokenBlacklisted(tokenHash: string): Promise<boolean> {
-  const token = await prisma.refreshToken.findUnique({
-    where: { tokenHash },
-  });
-  return !token || token.revokedAt !== null;
 }

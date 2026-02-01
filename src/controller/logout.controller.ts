@@ -1,28 +1,12 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/db";
-import { verifyRefreshToken } from "../utils/jwt";
 
 export async function logoutController(req: Request, res: Response) {
   try {
-    const refreshToken = req.cookies.refreshToken;
-
-    if (refreshToken) {
-      try {
-        const decoded = verifyRefreshToken(refreshToken);
-        
-        await prisma.refreshToken.updateMany({
-          where: {
-            userId: req.user!.id,
-            revokedAt: null,
-          },
-          data: {
-            revokedAt: new Date(),
-          },
-        });
-      } catch (error) {
-        // Token is invalid, but we still want to clear cookies
-      }
-    }
+    // Delete all refresh tokens for this user
+    await prisma.refreshToken.deleteMany({
+      where: { userId: req.user!.id },
+    });
 
     res
       .clearCookie("accessToken", {

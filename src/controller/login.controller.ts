@@ -2,11 +2,8 @@ import { prisma } from "../config/db";
 import { UserSchema } from "../validation/userSchema";
 import { type Request, type Response } from "express";
 import bcrypt from "bcrypt";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-  hashToken,
-} from "../utils/jwt";
+import { generateAccessToken, generateRefreshToken, hashToken } from "../utils/jwt";
+import { randomUUID } from "crypto";
 
 export async function loginController(req: Request, res: Response) {
   try {
@@ -27,29 +24,32 @@ export async function loginController(req: Request, res: Response) {
 
     if (!checkP) {
       return res.status(403).json({
-        message: "Invalid credenials",
+        message: "Invalid credentials",
       });
     }
 
-    const refreshTokenRecord = await prisma.refreshToken.create({
+    // Delete all existing refresh tokens for this user
+    await prisma.refreshToken.deleteMany({
+      where: { userId: existingUser.id },
+    });
+
+    const accessToken = generateAccessToken(existingUser.id);
+
+    // Generate token ID and create refresh token with hash immediately
+    const tokenId = randomUUID();
+    const refreshToken = generateRefreshToken(existingUser.id, tokenId);
+    const tokenHash = await hashToken(refreshToken);
+
+    // Create the record with actual hash
+    await prisma.refreshToken.create({
       data: {
+        id: tokenId,
         userId: existingUser.id,
-        tokenHash: "",
+        tokenHash: tokenHash,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         ipAddress: req.ip || null,
         userAgent: req.headers["user-agent"] || null,
       },
-    });
-
-    const accessToken = generateAccessToken(existingUser.id);
-    const refreshToken = generateRefreshToken(
-      existingUser.id,
-      refreshTokenRecord.id,
-    );
-
-    await prisma.refreshToken.update({
-      where: { id: refreshTokenRecord.id },
-      data: { tokenHash: await hashToken(refreshToken) },
     });
 
     res

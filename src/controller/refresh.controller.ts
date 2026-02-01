@@ -7,6 +7,7 @@ import {
   hashToken,
   verifyTokenHash,
 } from "../utils/jwt";
+import { randomUUID } from "crypto";
 
 export async function refreshController(req: Request, res: Response) {
   try {
@@ -32,10 +33,6 @@ export async function refreshController(req: Request, res: Response) {
       return res.status(401).json({ message: "Token not found" });
     }
 
-    if (tokenRecord.revokedAt) {
-      return res.status(401).json({ message: "Token revoked" });
-    }
-
     if (new Date() > tokenRecord.expiresAt) {
       return res.status(401).json({ message: "Token expired" });
     }
@@ -45,33 +42,27 @@ export async function refreshController(req: Request, res: Response) {
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    const newRefreshTokenRecord = await prisma.refreshToken.create({
-      data: {
-        userId: tokenRecord.userId,
-        tokenHash: "",
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        ipAddress: req.ip || null,
-        userAgent: req.headers["user-agent"] || null,
-      },
-    });
-
+    // Generate new token with hash immediately, then delete old token
     const accessToken = generateAccessToken(tokenRecord.user.id);
-    const newRefreshToken = generateRefreshToken(
-      tokenRecord.user.id,
-      newRefreshTokenRecord.id
-    );
+    
+    const newTokenId = randomUUID();
+    const newRefreshToken = generateRefreshToken(tokenRecord.user.id, newTokenId);
+    const newTokenHash = await hashToken(newRefreshToken);
 
+    // Create new token and delete old one atomically
     await prisma.$transaction([
-      prisma.refreshToken.update({
+      prisma.refreshToken.delete({
         where: { id: tokenRecord.id },
-        data: {
-          revokedAt: new Date(),
-          replacedByTokenId: newRefreshTokenRecord.id,
-        },
       }),
-      prisma.refreshToken.update({
-        where: { id: newRefreshTokenRecord.id },
-        data: { tokenHash: await hashToken(newRefreshToken) },
+      prisma.refreshToken.create({
+        data: {
+          id: newTokenId,
+          userId: tokenRecord.userId,
+          tokenHash: newTokenHash,
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          ipAddress: req.ip || null,
+          userAgent: req.headers["user-agent"] || null,
+        },
       }),
     ]);
 
