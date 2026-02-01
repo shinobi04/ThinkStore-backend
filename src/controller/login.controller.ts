@@ -2,7 +2,11 @@ import { prisma } from "../config/db";
 import { UserSchema } from "../validation/userSchema";
 import { type Request, type Response } from "express";
 import bcrypt from "bcrypt";
-import { generateAccessToken } from "../utils/jwt";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  hashToken,
+} from "../utils/jwt";
 
 export async function loginController(req: Request, res: Response) {
   try {
@@ -23,22 +27,52 @@ export async function loginController(req: Request, res: Response) {
 
     if (!checkP) {
       return res.status(403).json({
-        message: "Invalid credentials",
+        message: "Invalid credenials",
       });
     }
 
+    const refreshTokenRecord = await prisma.refreshToken.create({
+      data: {
+        userId: existingUser.id,
+        tokenHash: "",
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        ipAddress: req.ip || null,
+        userAgent: req.headers["user-agent"] || null,
+      },
+    });
+
     const accessToken = generateAccessToken(existingUser.id);
+    const refreshToken = generateRefreshToken(
+      existingUser.id,
+      refreshTokenRecord.id,
+    );
+
+    await prisma.refreshToken.update({
+      where: { id: refreshTokenRecord.id },
+      data: { tokenHash: await hashToken(refreshToken) },
+    });
 
     res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // 👈 important
+        secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 3600000, // 1 hour
+        maxAge: 15 * 60 * 1000,
+      })
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        path: "/auth/refresh",
       })
       .status(200)
       .json({
         message: `Welcome ${username}`,
+        user: {
+          id: existingUser.id,
+          username: existingUser.username,
+        },
       });
   } catch (error) {
     console.error(error);
