@@ -186,15 +186,7 @@ function DashboardContent() {
           </Space>
         )}
 
-        {/* Mobile FAB */}
-        <Button
-          type="primary"
-          shape="circle"
-          icon={<PlusOutlined />}
-          size="large"
-          onClick={() => setIsModalOpen(true)}
-          className="fixed bottom-6 right-6 w-14 h-14 shadow-lg sm:hidden z-50"
-        />
+
       </div>
 
       <AddContentModal
