@@ -6,6 +6,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useContentStore } from "@/stores/contentStore";
 import { ContentCard } from "@/components/ContentCard";
 import { AddContentModal } from "@/components/AddContentModal";
+import { DashboardNavbar } from "@/components/DashboardNavbar";
 import {
   Typography,
   Row,
@@ -65,7 +66,9 @@ function DashboardContent() {
 
   useEffect(() => {
     if (searchParams.get("add") === "true") {
-      setIsModalOpen(true);
+      queueMicrotask(() => {
+        setIsModalOpen(true);
+      });
     }
   }, [searchParams]);
 
@@ -91,15 +94,16 @@ function DashboardContent() {
 
   return (
     <div className="min-h-screen bg-pink-50">
+      <DashboardNavbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
-            <Title level={2} className="!mb-1">
+            <Title level={3} className="!mb-1 !font-semibold">
               My Content
             </Title>
-            <Text className="text-gray-600">
+            <Text className="text-gray-500 text-sm">
               {filteredContents.length}{" "}
-              {filteredContents.length === 1 ? "item" : "items"} saved
+              {filteredContents.length === 1 ? "item" : "items"} {selectedType !== "all" ? `(${selectedType})` : ""}
             </Text>
           </div>
 
