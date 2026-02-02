@@ -8,7 +8,7 @@ import {
   Select,
   Button,
   Space,
-  message,
+  App,
   Typography,
 } from "antd";
 import {
@@ -43,6 +43,7 @@ const typeOptions = [
 ];
 
 export function AddContentModal({ isOpen, onClose }: AddContentModalProps) {
+  const { message } = App.useApp();
   const [form] = Form.useForm<FormValues>();
   const { addContent } = useContentStore();
   const [isSubmitting, setIsSubmitting] = useState(false);

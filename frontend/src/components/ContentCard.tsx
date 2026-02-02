@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Typography, Tag, Space, Button, Tooltip, message } from "antd";
+import { Card, Typography, Tag, Space, Button, Tooltip, App } from "antd";
 import {
   LinkOutlined,
   TwitterOutlined,
@@ -53,6 +53,7 @@ const typeConfig: Record<
 };
 
 export function ContentCard({ content, viewMode = "grid" }: ContentCardProps) {
+  const { message } = App.useApp();
   const { deleteContent, createShareLink } = useContentStore();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
