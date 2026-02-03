@@ -61,44 +61,32 @@ export default function LoginPage() {
   const displayError = localError || error;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated Background Blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div 
-          className="absolute -top-20 -left-20 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"
-          style={{ animation: 'blob 7s infinite' }}
-        />
-        <div 
-          className="absolute top-40 -right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"
-          style={{ animation: 'blob 7s infinite', animationDelay: '2s' }}
-        />
-        <div 
-          className="absolute -bottom-20 left-1/2 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"
-          style={{ animation: 'blob 7s infinite', animationDelay: '4s' }}
-        />
-      </div>
-
+    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-4">
       <div className="absolute top-6 left-6 z-20">
         <Button
           type="text"
           icon={<ArrowLeftOutlined />}
           onClick={() => router.push("/")}
-          className="text-gray-600 hover:text-purple-600 transition-colors"
+          className="text-[#71717a] hover:text-[#fafafa] border-none"
         >
           Back to Home
         </Button>
       </div>
-      
-      <Card 
-        className="w-full max-w-md bg-white/80 backdrop-blur-xl shadow-2xl shadow-purple-200/50 rounded-3xl p-4 md:p-8 border border-white/50"
+
+      <Card
+        className="w-full max-w-md bg-[#18181b] border-[#27272a] rounded-lg"
+        styles={{ body: { padding: "2rem" } }}
       >
-        <Space direction="vertical" size="large" className="w-full">
+        <Space orientation="vertical" size="large" className="w-full">
           {/* Header */}
-           <div className="text-center">
-            <Title level={2} className="!mb-2 !text-gray-900">
+          <div className="text-center">
+            <div className="w-12 h-12 bg-[#27272a] rounded-lg flex items-center justify-center mx-auto mb-4 border border-[#3f3f46]">
+              <DatabaseOutlined className="text-[#fafafa] text-xl" />
+            </div>
+            <Title level={2} className="!mb-2 !text-[#fafafa]">
               Welcome Back
             </Title>
-            <Text className="text-gray-600 text-base">
+            <Text className="text-[#a1a1aa] text-base">
               Sign in to access your Think Store
             </Text>
           </div>
@@ -113,7 +101,7 @@ export default function LoginPage() {
                 setLocalError(null);
                 clearError();
               }}
-              className="!rounded-xl"
+              className="!bg-[#18181b] !border-[#27272a]"
             />
           )}
 
@@ -133,9 +121,9 @@ export default function LoginPage() {
               className="!mb-5"
             >
               <Input
-                prefix={<UserOutlined className="text-gray-400" />}
+                prefix={<UserOutlined className="text-[#71717a]" />}
                 placeholder="Username"
-                className="!rounded-lg !py-3"
+                className="!bg-[#27272a] !border-[#3f3f46] !text-[#fafafa] placeholder:!text-[#71717a]"
               />
             </Form.Item>
 
@@ -150,9 +138,9 @@ export default function LoginPage() {
               ]}
             >
               <Input.Password
-                prefix={<LockOutlined className="text-gray-400" />}
+                prefix={<LockOutlined className="text-[#71717a]" />}
                 placeholder="Password"
-                className="!rounded-lg !py-3"
+                className="!bg-[#27272a] !border-[#3f3f46] !text-[#fafafa] placeholder:!text-[#71717a]"
               />
             </Form.Item>
 
@@ -162,46 +150,28 @@ export default function LoginPage() {
                 htmlType="submit"
                 loading={isLoading}
                 block
-                className="h-14 !text-base bg-gradient-to-r from-pink-500 to-purple-500 border-none rounded-full shadow-lg shadow-pink-500/30 hover:shadow-xl hover:shadow-pink-500/40 hover:scale-105 transition-all duration-300"
+                className="h-12 !text-base !bg-[#fafafa] !text-[#0a0a0a] hover:!bg-[#e4e4e7] !border-none !rounded-md !font-medium"
               >
                 Sign In
               </Button>
             </Form.Item>
           </Form>
 
-          <Divider plain className="!mt-6">
-            <Text className="text-gray-400">or</Text>
+          <Divider plain className="!border-[#27272a]">
+            <Text className="text-[#71717a]">or</Text>
           </Divider>
 
           <div className="text-center">
-            <Text className="text-gray-600">Don&apos;t have an account? </Text>
-            <Link 
+            <Text className="text-[#a1a1aa]">Don't have an account? </Text>
+            <Link
               onClick={() => router.push("/signup")}
-              className="font-semibold text-purple-600 hover:text-purple-700 transition-colors"
+              className="text-[#fafafa] hover:text-[#e4e4e7] transition-colors font-medium"
             >
               Sign up
             </Link>
           </div>
         </Space>
       </Card>
-      
-      {/* CSS Animations */}
-      <style jsx global>{`
-        @keyframes blob {
-          0% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-        }
-      `}</style>
     </div>
   );
 }

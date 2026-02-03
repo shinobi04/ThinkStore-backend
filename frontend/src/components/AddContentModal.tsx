@@ -81,12 +81,17 @@ export function AddContentModal({ isOpen, onClose }: AddContentModalProps) {
 
   return (
     <Modal
-      title="Add New Content"
+      title={<span className="text-[#fafafa]">Add New Content</span>}
       open={isOpen}
       onCancel={handleCancel}
       footer={null}
       width={600}
       destroyOnHidden
+      className="dark-modal"
+      styles={{
+        mask: { backgroundColor: "rgba(0, 0, 0, 0.7)" },
+        header: { backgroundColor: "#18181b", borderBottom: "1px solid #27272a" },
+      }}
     >
       <Form
         form={form}
@@ -97,15 +102,20 @@ export function AddContentModal({ isOpen, onClose }: AddContentModalProps) {
       >
         <Form.Item
           name="type"
-          label="Content Type"
+          label={<span className="text-[#a1a1aa]">Content Type</span>}
           rules={[{ required: true, message: "Please select a content type" }]}
         >
-          <Select size="large" placeholder="Select type">
+          <Select 
+            size="large" 
+            placeholder="Select type"
+            className="!bg-[#27272a]"
+            styles={{ popup: { backgroundColor: "#27272a", border: "1px solid #3f3f46" } }}
+          >
             {typeOptions.map((option) => (
               <Option key={option.value} value={option.value}>
                 <Space>
-                  {option.icon}
-                  {option.label}
+                  <span className="text-[#fafafa]">{option.icon}</span>
+                  <span className="text-[#fafafa]">{option.label}</span>
                 </Space>
               </Option>
             ))}
@@ -114,26 +124,38 @@ export function AddContentModal({ isOpen, onClose }: AddContentModalProps) {
 
         <Form.Item
           name="title"
-          label="Title"
+          label={<span className="text-[#a1a1aa]">Title</span>}
           rules={[
             { required: true, message: "Please enter a title" },
             { max: 200, message: "Title must be less than 200 characters" },
           ]}
         >
-          <Input size="large" placeholder="Enter content title" />
+          <Input 
+            size="large" 
+            placeholder="Enter content title" 
+            className="!bg-[#27272a] !border-[#3f3f46] !text-[#fafafa] placeholder:!text-[#71717a]"
+          />
         </Form.Item>
 
         <Form.Item
           name="tags"
-          label="Tags"
-          help="Separate tags with commas (e.g., tutorial, javascript, webdev)"
+          label={<span className="text-[#a1a1aa]">Tags</span>}
+          help={<span className="text-[#71717a]">Separate tags with commas (e.g., tutorial, javascript, webdev)</span>}
         >
-          <Input size="large" placeholder="Add tags (optional)" />
+          <Input 
+            size="large" 
+            placeholder="Add tags (optional)" 
+            className="!bg-[#27272a] !border-[#3f3f46] !text-[#fafafa] placeholder:!text-[#71717a]"
+          />
         </Form.Item>
 
         <Form.Item className="mb-0 mt-6">
           <Space className="w-full justify-end">
-            <Button onClick={handleCancel} size="large">
+            <Button 
+              onClick={handleCancel} 
+              size="large"
+              className="!bg-transparent !text-[#a1a1aa] !border-[#27272a] hover:!border-[#3f3f46] hover:!text-[#fafafa]"
+            >
               Cancel
             </Button>
             <Button
@@ -141,6 +163,7 @@ export function AddContentModal({ isOpen, onClose }: AddContentModalProps) {
               htmlType="submit"
               loading={isSubmitting}
               size="large"
+              className="!bg-[#fafafa] !text-[#0a0a0a] hover:!bg-[#e4e4e7] !border-none !rounded-md !font-medium"
             >
               Add Content
             </Button>

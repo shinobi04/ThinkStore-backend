@@ -4,13 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import { useContentStore } from "@/stores/contentStore";
-import {
-  Button,
-  Drawer,
-  Typography,
-  Avatar,
-  Tooltip,
-} from "antd";
+import { Button, Drawer, Typography, Tooltip, a } from "antd";
 import {
   LogoutOutlined,
   MenuOutlined,
@@ -41,15 +35,15 @@ export function DashboardNavbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 h-20 bg-white/90 backdrop-blur-xl border-b border-gray-200/80 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+      <nav className="sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-[#27272a]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16">
           <div className="flex items-center justify-between h-full">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center shadow-lg shadow-pink-200/80">
-                <DatabaseOutlined className="text-white text-lg" />
+              <div className="w-8 h-8 bg-[#27272a] rounded-lg flex items-center justify-center border border-[#3f3f46]">
+                <DatabaseOutlined className="text-[#fafafa]" />
               </div>
-              <Text className="text-xl font-bold text-gray-800 tracking-tight hidden sm:block">
+              <Text className="text-lg font-semibold text-[#fafafa] hidden sm:block">
                 Think Store
               </Text>
             </div>
@@ -57,27 +51,26 @@ export function DashboardNavbar() {
             {/* Right side - Desktop Navigation + Mobile Menu */}
             <div className="flex items-center gap-4">
               {/* Desktop Navigation - Hidden on mobile */}
-              <div className="hidden md:flex items-center gap-5">
+              <div className="hidden md:flex items-center gap-4">
                 {/* Username */}
-                <div className="flex items-center gap-2">
-                  <Avatar className="bg-purple-500 text-white font-semibold">
-                    {user?.username?.[0].toUpperCase()}
-                  </Avatar>
-                  <Text className="text-sm text-gray-700 font-medium">
+                <div className="flex items-center gap-3">
+                  <Text className="text-sm text-[#a1a1aa]">
                     {user?.username}
                   </Text>
                 </div>
+
+                {/* Divider */}
+                <div className="w-px h-6 bg-[#27272a]" />
 
                 {/* Logout Button */}
                 <Tooltip title="Logout" placement="bottom">
                   <Button
                     type="text"
                     shape="circle"
-                    icon={<LogoutOutlined className="text-gray-600" />}
+                    icon={<LogoutOutlined className="text-[#71717a]" />}
                     onClick={handleLogout}
                     loading={isLoggingOut}
-                    className="hover:bg-gray-100"
-                    size="large"
+                    className="hover:!bg-[#27272a] !border-none"
                   />
                 </Tooltip>
               </div>
@@ -86,10 +79,15 @@ export function DashboardNavbar() {
               <div className="block md:hidden">
                 <Button
                   type="text"
-                  icon={mobileMenuOpen ? <CloseOutlined /> : <MenuOutlined />}
+                  icon={
+                    mobileMenuOpen ? (
+                      <CloseOutlined className="text-[#fafafa]" />
+                    ) : (
+                      <MenuOutlined className="text-[#fafafa]" />
+                    )
+                  }
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="text-gray-700"
-                  size="large"
+                  className="!border-none hover:!bg-[#27272a]"
                 />
               </div>
             </div>
@@ -101,46 +99,52 @@ export function DashboardNavbar() {
         placement="right"
         onClose={() => setMobileMenuOpen(false)}
         open={mobileMenuOpen}
-        width={280}
+        size="default"
         closable={false}
         className="mobile-nav-drawer"
         styles={{
-          body: { padding: 0 },
+          body: { padding: 0, background: "#0a0a0a" },
           header: { display: "none" },
+          mask: { background: "rgba(0, 0, 0, 0.5)" },
         }}
       >
-        <div className="flex flex-col h-full bg-gray-50">
+        <div className="flex flex-col h-full bg-[#0a0a0a]">
           {/* Drawer Header */}
-          <div className="p-4 border-b border-gray-200">
-            <div className="flex items-center gap-3">
-               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center shadow-lg shadow-pink-200/80">
-                <DatabaseOutlined className="text-white text-lg" />
+          <div className="p-4 border-b border-[#27272a]">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-[#27272a] rounded-lg flex items-center justify-center border border-[#3f3f46]">
+                  <DatabaseOutlined className="text-[#fafafa]" />
+                </div>
+                <Text className="text-lg font-semibold text-[#fafafa]">
+                  Think Store
+                </Text>
               </div>
-              <Text className="text-lg font-bold text-gray-800">
-                Think Store
-              </Text>
+              <Button
+                type="text"
+                icon={<CloseOutlined className="text-[#fafafa]" />}
+                onClick={() => setMobileMenuOpen(false)}
+                className="!border-none"
+              />
             </div>
           </div>
 
           {/* Drawer Content */}
           <div className="flex-1 p-4">
-             <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
-                <Avatar size="large" className="bg-purple-500 text-white font-semibold">
-                  {user?.username?.[0].toUpperCase()}
-                </Avatar>
-                <div>
-                  <Text className="font-semibold text-gray-800 block">
-                    {user?.username}
-                  </Text>
-                  <Text className="text-xs text-gray-500">
-                    {contentCount} items saved
-                  </Text>
-                </div>
+            <div className="flex items-center gap-3 p-4 bg-[#18181b] rounded-lg border border-[#27272a]">
+              <div>
+                <Text className="text-[#fafafa] font-medium block">
+                  {user?.username}
+                </Text>
+                <Text className="text-xs text-[#71717a]">
+                  {contentCount} items saved
+                </Text>
               </div>
+            </div>
           </div>
 
           {/* Drawer Footer */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-[#27272a]">
             <Button
               type="primary"
               icon={<LogoutOutlined />}
@@ -148,7 +152,7 @@ export function DashboardNavbar() {
               loading={isLoggingOut}
               block
               size="large"
-              className="bg-gradient-to-r from-pink-500 to-purple-500 border-none rounded-full shadow-lg shadow-pink-500/30 hover:shadow-xl hover:scale-105 transition-all"
+              className="!bg-[#fafafa] !text-[#0a0a0a] hover:!bg-[#e4e4e7] !border-none !rounded-md !font-medium"
             >
               Logout
             </Button>

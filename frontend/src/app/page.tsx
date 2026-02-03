@@ -19,7 +19,8 @@ import {
   FileTextOutlined,
   ArrowRightOutlined,
   DatabaseOutlined,
-  StarOutlined,
+  ExportOutlined,
+  GithubOutlined,
 } from "@ant-design/icons";
 
 const { Title, Text, Paragraph } = Typography;
@@ -40,8 +41,8 @@ export default function WelcomePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
-        <Spin size="large" />
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
+        <Spin size="large" className="text-[#71717a]" />
       </div>
     );
   }
@@ -51,204 +52,193 @@ export default function WelcomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 relative overflow-hidden">
-      {/* Animated Background Blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Blob 1 - Pink */}
-        <div 
-          className="absolute -top-20 -left-20 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"
-          style={{ animation: 'blob 7s infinite' }}
-        />
-        {/* Blob 2 - Purple */}
-        <div 
-          className="absolute top-40 -right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"
-          style={{ animation: 'blob 7s infinite', animationDelay: '2s' }}
-        />
-        {/* Blob 3 - Blue */}
-        <div 
-          className="absolute -bottom-20 left-1/2 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"
-          style={{ animation: 'blob 7s infinite', animationDelay: '4s' }}
-        />
-        {/* Small floating shapes */}
-        <div className="absolute top-20 right-1/4 w-4 h-4 bg-yellow-400 rounded-full animate-pulse" />
-        <div className="absolute top-40 left-1/4 w-6 h-6 bg-pink-400 rounded-lg rotate-45 animate-bounce" style={{ animationDuration: '3s' }} />
-        <div className="absolute bottom-40 right-1/3 w-3 h-3 bg-purple-400 rounded-full animate-ping" style={{ animationDuration: '3s' }} />
-      </div>
-
-      {/* Grid Pattern Overlay */}
-      <div 
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px'
-        }}
-      />
+    <div className="min-h-screen bg-[#0a0a0a] text-[#fafafa]">
+      {/* Navigation */}
+      <nav className="border-b border-[#27272a]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-[#27272a] rounded-lg flex items-center justify-center border border-[#3f3f46]">
+                <DatabaseOutlined className="text-[#fafafa] text-lg" />
+              </div>
+              <Text className="text-lg font-semibold text-[#fafafa]">
+                Think Store
+              </Text>
+            </div>
+            <div className="flex items-center gap-4">
+              <Button
+                type="text"
+                className="text-[#a1a1aa] hover:text-[#fafafa]"
+                onClick={() => router.push("/login")}
+              >
+                Sign in
+              </Button>
+               <Button
+                type="primary"
+                onClick={() => router.push("/signup")}
+              >
+                Get Started
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
 
       {/* Hero Section */}
-      <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-        <div className="max-w-7xl mx-auto">
-          <Row gutter={[48, 48]} align="middle">
-            <Col xs={24} lg={12}>
-              <Space orientation="vertical" size="large" className="w-full">
-                <div>
-                  {/* Badge */}
-                  <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg shadow-pink-200/50 mb-6 border border-pink-100 hover:scale-105 transition-transform duration-300">
-                    <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse" />
-                    <Text className="text-sm text-gray-700 font-medium">
-                      Your personal Think Store
-                    </Text>
-                    <StarOutlined className="text-yellow-500 text-sm" />
+      <main>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#27272a] bg-[#18181b] mb-8">
+              <Text className="text-sm text-[#a1a1aa]">
+                The most comprehensive content organizer for the web
+              </Text>
+            </div>
+            
+            <Title
+              level={1}
+              className="!text-4xl sm:!text-5xl lg:!text-6xl !font-bold !text-[#fafafa] !mb-6 !leading-tight"
+            >
+              Save. Organize.
+              <br />
+              <span className="text-[#71717a]">Share.</span>
+            </Title>
+            
+            <Paragraph className="text-lg sm:text-xl text-[#a1a1aa] max-w-2xl mx-auto mb-10 leading-relaxed">
+              Think Store helps you capture and organize links, tweets, 
+              YouTube videos, and documents. Never lose an important resource again.
+            </Paragraph>
+
+            <Space size="large" className="flex-wrap justify-center">
+              <Button
+                type="primary"
+                size="large"
+                icon={<ArrowRightOutlined />}
+                onClick={() => router.push("/signup")}
+                className="h-12 px-8 bg-[#fafafa] text-[#0a0a0a] hover:bg-[#e4e4e7] border-none text-base font-medium"
+              >
+                Get Started
+              </Button>
+              <Button
+                size="large"
+                icon={<GithubOutlined />}
+                onClick={() => window.open("https://github.com", "_blank")}
+                className="h-12 px-8 bg-transparent text-[#fafafa] border-[#27272a] hover:border-[#3f3f46] hover:text-[#fafafa] text-base font-medium"
+              >
+                View on GitHub
+              </Button>
+            </Space>
+
+            <div className="mt-4">
+              <Text className="text-sm text-[#71717a]">
+                Free to use. No credit card required.
+              </Text>
+            </div>
+          </div>
+        </div>
+
+        {/* Demo Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="max-w-5xl mx-auto">
+            <Card 
+              className="bg-[#09090b] border border-[#27272a] shadow-2xl"
+              styles={{ body: { padding: 0 } }}
+            >
+              {/* Card Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-[#27272a]">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-[#27272a] rounded-md flex items-center justify-center">
+                    <DatabaseOutlined className="text-[#fafafa]" />
                   </div>
-                  
-                  {/* Main Heading with Gradient */}
-                  <Title
-                    level={1}
-                    className="!text-4xl md:!text-5xl lg:!text-6xl !font-bold !text-gray-900 !mb-4"
-                  >
-                    Save, Organize,
-                    <br />
-                    <span className="animated-gradient-text">
-                      & Share
-                    </span>
-                  </Title>
-                  <Paragraph className="text-lg md:text-xl text-gray-600 max-w-lg leading-relaxed">
-                    Think Store helps you capture and organize links, tweets,
-                    YouTube videos, and documents. Never lose an important
-                    resource again.
-                  </Paragraph>
+                  <Text className="text-[#fafafa] font-medium">Think Store</Text>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#27272a]" />
+                  <div className="w-3 h-3 rounded-full bg-[#27272a]" />
+                  <div className="w-3 h-3 rounded-full bg-[#27272a]" />
+                </div>
+              </div>
+
+              {/* Content Items */}
+              <div className="p-6 space-y-4">
+                <div className="flex items-center gap-4 p-4 bg-[#18181b] rounded-lg border border-[#27272a] hover:border-[#3f3f46] transition-colors">
+                  <div className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center">
+                    <YoutubeOutlined className="text-[#fafafa]" />
+                  </div>
+                  <div className="flex-1">
+                    <Text className="text-[#fafafa] block">How to Build a Startup</Text>
+                    <Text className="text-xs text-[#71717a]">YouTube • 15 mins ago</Text>
+                  </div>
+                  <ExportOutlined className="text-[#71717a]" />
                 </div>
 
-                {/* CTA Buttons */}
-                <Space size="middle" className="flex-wrap">
-                  <Button
-                    type="primary"
-                    size="large"
-                    icon={<ArrowRightOutlined />}
-                    onClick={() => router.push("/login")}
-                    className="h-14 px-8 text-base bg-gradient-to-r from-pink-500 to-purple-500 border-none rounded-full shadow-lg shadow-pink-500/30 hover:shadow-xl hover:shadow-pink-500/40 hover:scale-105 transition-all duration-300"
-                  >
-                    Get Started
-                  </Button>
-                  <Button
-                    size="large"
-                    onClick={() => router.push("/signup")}
-                    className="h-14 px-8 text-base rounded-full border-2 border-gray-300 hover:border-purple-400 hover:text-purple-600 transition-all duration-300"
-                  >
-                    Create Account
-                  </Button>
-                </Space>
-
-                <Text className="text-sm text-gray-500">
-                  Free to use. No credit card required.
-                </Text>
-              </Space>
-            </Col>
-
-            <Col xs={24} lg={12} className="hidden md:block">
-              <div className="relative">
-                {/* Decorative background glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-pink-400 to-purple-400 rounded-3xl transform rotate-6 opacity-20 blur-2xl" />
-                
-                {/* Main Demo Card */}
-                <Card className="relative bg-white/90 backdrop-blur-xl shadow-2xl shadow-pink-200/50 rounded-3xl p-8 border border-white/50 hover:scale-[1.02] transition-transform duration-500">
-                  {/* Card Header */}
-                  <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
-                    <div className="w-10 h-10 bg-gradient-to-br from-pink-400 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                      <DatabaseOutlined className="text-white text-lg" />
-                    </div>
-                    <div>
-                      <Text className="font-semibold text-gray-900 block">Think Store</Text>
-                      <Text className="text-xs text-gray-500">12 items saved</Text>
-                    </div>
+                <div className="flex items-center gap-4 p-4 bg-[#18181b] rounded-lg border border-[#27272a] hover:border-[#3f3f46] transition-colors">
+                  <div className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center">
+                    <TwitterOutlined className="text-[#fafafa]" />
                   </div>
+                  <div className="flex-1">
+                    <Text className="text-[#fafafa] block">10 Tips for Developers</Text>
+                    <Text className="text-xs text-[#71717a]">Tweet • 2 hours ago</Text>
+                  </div>
+                  <ExportOutlined className="text-[#71717a]" />
+                </div>
 
-                  <Space direction="vertical" size="middle" className="w-full">
-                    {/* Content Item 1 */}
-                    <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl hover:shadow-md transition-shadow duration-300 border border-red-100">
-                      <div className="w-12 h-12 bg-gradient-to-br from-red-400 to-red-500 rounded-xl flex items-center justify-center shadow-lg shadow-red-200">
-                        <YoutubeOutlined className="text-white text-xl" />
-                      </div>
-                      <div className="flex-1">
-                        <Text className="font-semibold text-gray-800 block">How to Build a Startup</Text>
-                        <Text className="text-xs text-gray-500">YouTube • 15 mins ago</Text>
-                      </div>
-                    </div>
+                <div className="flex items-center gap-4 p-4 bg-[#18181b] rounded-lg border border-[#27272a] hover:border-[#3f3f46] transition-colors">
+                  <div className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center">
+                    <LinkOutlined className="text-[#fafafa]" />
+                  </div>
+                  <div className="flex-1">
+                    <Text className="text-[#fafafa] block">Best Design Resources</Text>
+                    <Text className="text-xs text-[#71717a]">Link • 5 hours ago</Text>
+                  </div>
+                  <ExportOutlined className="text-[#71717a]" />
+                </div>
 
-                    {/* Content Item 2 */}
-                    <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl hover:shadow-md transition-shadow duration-300 border border-blue-100">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
-                        <TwitterOutlined className="text-white text-xl" />
-                      </div>
-                      <div className="flex-1">
-                        <Text className="font-semibold text-gray-800 block">10 Tips for Developers</Text>
-                        <Text className="text-xs text-gray-500">Tweet • 2 hours ago</Text>
-                      </div>
-                    </div>
-
-                    {/* Content Item 3 */}
-                    <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl hover:shadow-md transition-shadow duration-300 border border-green-100">
-                      <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-500 rounded-xl flex items-center justify-center shadow-lg shadow-green-200">
-                        <LinkOutlined className="text-white text-xl" />
-                      </div>
-                      <div className="flex-1">
-                        <Text className="font-semibold text-gray-800 block">Best Design Resources</Text>
-                        <Text className="text-xs text-gray-500">Link • 5 hours ago</Text>
-                      </div>
-                    </div>
-
-                    {/* Content Item 4 */}
-                    <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl hover:shadow-md transition-shadow duration-300 border border-purple-100">
-                      <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-200">
-                        <FileTextOutlined className="text-white text-xl" />
-                      </div>
-                      <div className="flex-1">
-                        <Text className="font-semibold text-gray-800 block">Project Documentation</Text>
-                        <Text className="text-xs text-gray-500">Document • Yesterday</Text>
-                      </div>
-                    </div>
-                  </Space>
-                </Card>
+                <div className="flex items-center gap-4 p-4 bg-[#18181b] rounded-lg border border-[#27272a] hover:border-[#3f3f46] transition-colors">
+                  <div className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center">
+                    <FileTextOutlined className="text-[#fafafa]" />
+                  </div>
+                  <div className="flex-1">
+                    <Text className="text-[#fafafa] block">Project Documentation</Text>
+                    <Text className="text-xs text-[#71717a]">Document • Yesterday</Text>
+                  </div>
+                  <ExportOutlined className="text-[#71717a]" />
+                </div>
               </div>
-            </Col>
-          </Row>
+            </Card>
+          </div>
         </div>
-      </div>
 
-      {/* Features Section */}
-      <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-20">
-        <div className="max-w-7xl mx-auto">
+        {/* Features Grid */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center mb-16">
-            <Title level={2} className="!text-3xl md:!text-4xl !font-bold !text-gray-900">
+            <Title level={2} className="!text-3xl sm:!text-4xl !font-bold !text-[#fafafa] !mb-4">
               Everything you need
             </Title>
-            <Paragraph className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
+            <Paragraph className="text-lg text-[#71717a] max-w-2xl mx-auto">
               Powerful features to help you organize your digital life
             </Paragraph>
           </div>
 
           <Row gutter={[24, 24]}>
             <Col xs={24} sm={12} lg={6}>
-              <Card className="h-full bg-white/80 backdrop-blur-sm hover:shadow-xl hover:shadow-pink-200/50 hover:-translate-y-2 transition-all duration-300 border border-white/50">
-                <div className="w-14 h-14 bg-gradient-to-br from-pink-400 to-pink-500 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-pink-200">
-                  <LinkOutlined className="text-white text-2xl" />
+              <div className="p-6 bg-[#18181b] border border-[#27272a] rounded-lg hover:border-[#3f3f46] transition-colors h-full">
+                <div className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center mb-4">
+                  <LinkOutlined className="text-[#fafafa]" />
                 </div>
-                <Title level={4} className="!text-lg !mb-3 !text-gray-900">
+                <Text className="text-[#fafafa] block text-lg font-semibold mb-2">
                   Save Anything
-                </Title>
-                <Text className="text-gray-600 leading-relaxed">
+                </Text>
+                <Text className="text-[#a1a1aa]">
                   Links, tweets, YouTube videos, and documents all in one place.
                 </Text>
-              </Card>
+              </div>
             </Col>
 
             <Col xs={24} sm={12} lg={6}>
-              <Card className="h-full bg-white/80 backdrop-blur-sm hover:shadow-xl hover:shadow-blue-200/50 hover:-translate-y-2 transition-all duration-300 border border-white/50">
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-500 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-blue-200">
+              <div className="p-6 bg-[#18181b] border border-[#27272a] rounded-lg hover:border-[#3f3f46] transition-colors h-full">
+                <div className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center mb-4">
                   <svg
-                    className="w-7 h-7 text-white"
+                    className="w-5 h-5 text-[#fafafa]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -261,20 +251,20 @@ export default function WelcomePage() {
                     />
                   </svg>
                 </div>
-                <Title level={4} className="!text-lg !mb-3 !text-gray-900">
+                <Text className="text-[#fafafa] block text-lg font-semibold mb-2">
                   Tag & Organize
-                </Title>
-                <Text className="text-gray-600 leading-relaxed">
+                </Text>
+                <Text className="text-[#a1a1aa]">
                   Use tags to categorize and find your content quickly.
                 </Text>
-              </Card>
+              </div>
             </Col>
 
             <Col xs={24} sm={12} lg={6}>
-              <Card className="h-full bg-white/80 backdrop-blur-sm hover:shadow-xl hover:shadow-green-200/50 hover:-translate-y-2 transition-all duration-300 border border-white/50">
-                <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-green-500 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-green-200">
+              <div className="p-6 bg-[#18181b] border border-[#27272a] rounded-lg hover:border-[#3f3f46] transition-colors h-full">
+                <div className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center mb-4">
                   <svg
-                    className="w-7 h-7 text-white"
+                    className="w-5 h-5 text-[#fafafa]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -287,20 +277,20 @@ export default function WelcomePage() {
                     />
                   </svg>
                 </div>
-                <Title level={4} className="!text-lg !mb-3 !text-gray-900">
+                <Text className="text-[#fafafa] block text-lg font-semibold mb-2">
                   Share Easily
-                </Title>
-                <Text className="text-gray-600 leading-relaxed">
+                </Text>
+                <Text className="text-[#a1a1aa]">
                   Generate shareable links to share content with others.
                 </Text>
-              </Card>
+              </div>
             </Col>
 
             <Col xs={24} sm={12} lg={6}>
-              <Card className="h-full bg-white/80 backdrop-blur-sm hover:shadow-xl hover:shadow-purple-200/50 hover:-translate-y-2 transition-all duration-300 border border-white/50">
-                <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-500 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-purple-200">
+              <div className="p-6 bg-[#18181b] border border-[#27272a] rounded-lg hover:border-[#3f3f46] transition-colors h-full">
+                <div className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center mb-4">
                   <svg
-                    className="w-7 h-7 text-white"
+                    className="w-5 h-5 text-[#fafafa]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -313,85 +303,66 @@ export default function WelcomePage() {
                     />
                   </svg>
                 </div>
-                <Title level={4} className="!text-lg !mb-3 !text-gray-900">
+                <Text className="text-[#fafafa] block text-lg font-semibold mb-2">
                   Secure
-                </Title>
-                <Text className="text-gray-600 leading-relaxed">
+                </Text>
+                <Text className="text-[#a1a1aa]">
                   Your data is protected with JWT authentication.
                 </Text>
-              </Card>
+              </div>
             </Col>
           </Row>
         </div>
-      </div>
 
-      {/* Bottom CTA Section */}
-      <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-20">
-        <div className="max-w-4xl mx-auto">
-          <div 
-            className="bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 text-center shadow-2xl relative overflow-hidden"
-            style={{
-              border: '1px solid rgba(255, 255, 255, 0.18)',
-            }}
-          >
-            {/* Decorative shapes */}
-            <div className="absolute top-0 left-0 w-32 h-32 bg-pink-400/20 rounded-full -translate-x-1/2 -translate-y-1/2 filter blur-2xl" />
-            <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-400/20 rounded-full translate-x-1/3 translate-y-1/3 filter blur-2xl" />
-            
-            <Title level={2} className="!text-3xl md:!text-4xl !font-bold !text-gray-900 !mb-4 relative z-10">
-              Ready to organize your thoughts?
-            </Title>
-            <Paragraph className="text-gray-700 text-lg mb-8 relative z-10">
-              Join thousands of users who trust Think Store to manage their digital content.
-            </Paragraph>
-            <Button
-              type="primary"
-              size="large"
-              onClick={() => router.push("/signup")}
-              className="h-14 px-10 text-base bg-gradient-to-r from-pink-500 to-purple-600 text-white border-none rounded-full shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 relative z-10"
-            >
-              Start for Free
-            </Button>
+        {/* CTA Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="p-8 bg-[#18181b] border border-[#27272a] rounded-xl">
+              <Title level={2} className="!text-2xl sm:!text-3xl !font-bold !text-[#fafafa] !mb-4">
+                Ready to organize your thoughts?
+              </Title>
+              <Paragraph className="text-[#71717a] mb-6">
+                Join thousands of users who trust Think Store to manage their digital content.
+              </Paragraph>
+              <Button
+                type="primary"
+                size="large"
+                onClick={() => router.push("/signup")}
+                className="h-12 px-10 bg-[#fafafa] text-[#0a0a0a] hover:bg-[#e4e4e7] border-none font-medium"
+              >
+                Start for Free
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Footer */}
-      <footer className="relative z-10 py-8 text-center">
-        <Text className="text-gray-500 text-sm">
-          © 2026 Think Store. All rights reserved.
-        </Text>
+      <footer className="border-t border-[#27272a] mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 bg-[#27272a] rounded flex items-center justify-center">
+                <DatabaseOutlined className="text-[#fafafa] text-xs" />
+              </div>
+              <Text className="text-[#71717a] text-sm">
+                © 2026 Think Store. All rights reserved.
+              </Text>
+            </div>
+            <div className="flex items-center gap-6">
+              <a href="#" className="text-[#71717a] hover:text-[#fafafa] text-sm transition-colors">
+                Docs
+              </a>
+              <a href="#" className="text-[#71717a] hover:text-[#fafafa] text-sm transition-colors">
+                GitHub
+              </a>
+              <a href="#" className="text-[#71717a] hover:text-[#fafafa] text-sm transition-colors">
+                Community
+              </a>
+            </div>
+          </div>
+        </div>
       </footer>
-
-      {/* CSS Animations */}
-      <style jsx global>{`
-        @keyframes blob {
-          0% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-        }
-        @keyframes gradient-animation {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .animated-gradient-text {
-          background: linear-gradient(90deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
-          background-size: 200% 200%;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: gradient-animation 5s ease infinite;
-        }
-      `}</style>
     </div>
   );
 }

@@ -22,32 +22,25 @@ interface ContentCardProps {
   viewMode?: "grid" | "list";
 }
 
+// Monochrome icon configuration
 const typeConfig: Record<
   ContentType,
-  { icon: React.ReactNode; color: string; bgColor: string; label: string }
+  { icon: React.ReactNode; label: string }
 > = {
   link: {
     icon: <LinkOutlined />,
-    color: "text-green-500",
-    bgColor: "bg-green-50",
     label: "Link",
   },
   tweet: {
     icon: <TwitterOutlined />,
-    color: "text-blue-500",
-    bgColor: "bg-blue-50",
     label: "Tweet",
   },
   youtube: {
     icon: <YoutubeOutlined />,
-    color: "text-red-500",
-    bgColor: "bg-red-50",
     label: "YouTube",
   },
   document: {
     icon: <FileTextOutlined />,
-    color: "text-purple-500",
-    bgColor: "bg-purple-50",
     label: "Document",
   },
 };
@@ -105,35 +98,41 @@ export function ContentCard({ content, viewMode = "grid" }: ContentCardProps) {
     year: "numeric",
   });
 
+  const cardBaseStyles = "bg-[#18181b] border border-[#27272a] rounded-lg transition-all duration-200";
+  const cardHoverStyles = "hover:border-[#3f3f46] hover:bg-[#1f1f23]";
+
   if (viewMode === "list") {
     return (
-      <Card className="w-full hover:shadow-md transition-shadow">
+       <Card className={`${cardBaseStyles} ${cardHoverStyles} w-full`} styles={{ body: { padding: "1rem" } }}>
         <div className="flex items-center gap-4">
           <div
-            className={`w-12 h-12 ${typeInfo.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`}
+            className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center flex-shrink-0 border border-[#3f3f46]"
           >
-            <span className={typeInfo.color}>{typeInfo.icon}</span>
+            <span className="text-[#fafafa]">{typeInfo.icon}</span>
           </div>
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <Title level={5} className="!mb-0 truncate">
+              <Title level={5} className="!mb-0 truncate !font-medium !text-[#fafafa]">
                 {content.title}
               </Title>
               {hasShareLink && (
-                <Tag color="green" icon={<GlobalOutlined />}>
+                <Tag className="!bg-[#27272a] !text-[#a1a1aa] !border-[#3f3f46] rounded-full">
+                  <GlobalOutlined className="mr-1" />
                   Shared
                 </Tag>
               )}
             </div>
             <Space size="small" wrap>
-              <Tag color="default">{typeInfo.label}</Tag>
+              <Tag className="rounded-full bg-[#27272a] text-[#71717a] border-[#3f3f46]">
+                {typeInfo.label}
+              </Tag>
               {content.tags.map((tag) => (
-                <Tag key={tag.id} color="pink">
+                <Tag key={tag.id} className="rounded-full bg-[#27272a] text-[#a1a1aa] border-[#3f3f46]">
                   {tag.name}
                 </Tag>
               ))}
-              <Text className="text-gray-400 text-sm">{formattedDate}</Text>
+              <Text className="text-[#52525b] text-sm">{formattedDate}</Text>
             </Space>
           </div>
 
@@ -141,25 +140,27 @@ export function ContentCard({ content, viewMode = "grid" }: ContentCardProps) {
             <Tooltip title="Copy title">
               <Button
                 type="text"
-                icon={<CopyOutlined />}
+                icon={<CopyOutlined className="text-[#71717a]" />}
                 onClick={handleCopyTitle}
+                className="hover:!bg-[#27272a] !border-none"
               />
             </Tooltip>
             <Tooltip title={hasShareLink ? "Copy share link" : "Create share link"}>
               <Button
                 type="text"
-                icon={<ShareAltOutlined />}
+                icon={<ShareAltOutlined className="text-[#71717a]" />}
                 onClick={handleShare}
                 loading={isSharing}
+                className="hover:!bg-[#27272a] !border-none"
               />
             </Tooltip>
             <Tooltip title="Delete">
               <Button
                 type="text"
-                danger
-                icon={<DeleteOutlined />}
+                icon={<DeleteOutlined className="text-[#71717a]" />}
                 onClick={handleDelete}
                 loading={isDeleting}
+                className="hover:!bg-[#27272a] hover:!text-[#ef4444] !border-none"
               />
             </Tooltip>
           </Space>
@@ -170,13 +171,15 @@ export function ContentCard({ content, viewMode = "grid" }: ContentCardProps) {
 
   return (
     <Card
-      className="h-full hover:shadow-lg transition-shadow"
+      className={`${cardBaseStyles} ${cardHoverStyles} h-full flex flex-col`}
+      styles={{ body: { flex: 1, padding: "1rem" } }}
       actions={[
         <Tooltip title="Copy title" key="copy">
           <Button
             type="text"
-            icon={<CopyOutlined />}
+            icon={<CopyOutlined className="text-[#71717a]" />}
             onClick={handleCopyTitle}
+            className="hover:!bg-[#27272a] !border-none"
           />
         </Tooltip>,
         <Tooltip
@@ -185,56 +188,57 @@ export function ContentCard({ content, viewMode = "grid" }: ContentCardProps) {
         >
           <Button
             type="text"
-            icon={<ShareAltOutlined />}
+            icon={<ShareAltOutlined className="text-[#71717a]" />}
             onClick={handleShare}
             loading={isSharing}
+            className="hover:!bg-[#27272a] !border-none"
           />
         </Tooltip>,
         <Tooltip title="Delete" key="delete">
           <Button
             type="text"
-            danger
-            icon={<DeleteOutlined />}
+            icon={<DeleteOutlined className="text-[#71717a]" />}
             onClick={handleDelete}
             loading={isDeleting}
+            className="hover:!bg-[#27272a] hover:!text-[#ef4444] !border-none"
           />
         </Tooltip>,
       ]}
     >
-      <div className="flex items-start gap-3 mb-4">
+      <div className="flex items-start gap-3 mb-3">
         <div
-          className={`w-10 h-10 ${typeInfo.bgColor} rounded-lg flex items-center justify-center flex-shrink-0`}
+          className="w-10 h-10 bg-[#27272a] rounded-lg flex items-center justify-center flex-shrink-0 border border-[#3f3f46]"
         >
-          <span className={`${typeInfo.color} text-lg`}>{typeInfo.icon}</span>
+          <span className="text-[#fafafa] text-lg">{typeInfo.icon}</span>
         </div>
         <div className="flex-1 min-w-0">
-          <Title level={5} className="!mb-1 !text-base truncate">
+          <Title level={5} className="!mb-0.5 !text-sm !font-medium truncate !text-[#fafafa]">
             {content.title}
           </Title>
-          <Text className="text-gray-400 text-xs">{formattedDate}</Text>
+          <Text className="text-[#52525b] text-xs">{formattedDate}</Text>
         </div>
         {hasShareLink && (
-          <Tag color="green" className="flex-shrink-0" icon={<GlobalOutlined />}>
-            Shared
-          </Tag>
+           <Tooltip title="Shared">
+             <GlobalOutlined className="text-[#71717a]" />
+           </Tooltip>
         )}
       </div>
 
-      <div className="mb-3">
-        <Tag color="default" className="mb-2">
+      <div className="flex-grow mb-3">
+        <Tag className="rounded-full bg-[#27272a] text-[#71717a] border-[#3f3f46] text-xs">
           {typeInfo.label}
         </Tag>
       </div>
 
       {content.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-1.5">
           {content.tags.slice(0, 3).map((tag) => (
-            <Tag key={tag.id} color="pink" className="text-xs">
+            <Tag key={tag.id} className="rounded-full bg-[#27272a] text-[#a1a1aa] border-[#3f3f46] text-xs">
               {tag.name}
             </Tag>
           ))}
           {content.tags.length > 3 && (
-            <Tag color="default" className="text-xs">
+            <Tag className="rounded-full bg-[#27272a] text-[#71717a] border-[#3f3f46] text-xs">
               +{content.tags.length - 3}
             </Tag>
           )}

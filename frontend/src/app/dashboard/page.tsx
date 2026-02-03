@@ -46,7 +46,7 @@ function DashboardContent() {
     selectedType,
   } = useContentStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
 
   useEffect(() => {
     checkAuth();
@@ -86,75 +86,76 @@ function DashboardContent() {
 
   if (authLoading || (!isAuthenticated && !authLoading)) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Spin size="large" />
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
+        <Spin size="large" className="text-[#71717a]" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-pink-50">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <DashboardNavbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
-            <Title level={3} className="!mb-1 !font-semibold">
+            <Title level={2} className="!mb-1 !font-bold !text-[#fafafa]">
               My Content
             </Title>
-            <Text className="text-gray-500 text-sm">
-              {filteredContents.length}{" "}
-              {filteredContents.length === 1 ? "item" : "items"} {selectedType !== "all" ? `(${selectedType})` : ""}
+            <Text className="text-[#71717a]">
+              You have {filteredContents.length} items saved.
             </Text>
           </div>
 
           <Space>
             <Segmented
               options={[
-                { value: "grid", icon: <AppstoreOutlined /> },
-                { value: "list", icon: <UnorderedListOutlined /> },
+                { value: "grid", icon: <AppstoreOutlined className="text-[#71717a]" /> },
+                { value: "list", icon: <UnorderedListOutlined className="text-[#71717a]" /> },
               ]}
               value={viewMode}
               onChange={(value) => setViewMode(value as ViewMode)}
+              className="!bg-[#18181b] !border !border-[#27272a] !rounded-lg"
             />
             <Button
               type="primary"
               icon={<PlusOutlined />}
               onClick={() => setIsModalOpen(true)}
-              className="hidden sm:inline-flex"
+              className="hidden sm:inline-flex !bg-[#fafafa] !text-[#0a0a0a] hover:!bg-[#e4e4e7] !border-none"
+              size="large"
             >
               Add Content
             </Button>
           </Space>
         </div>
 
-        <div className="mb-6 overflow-x-auto">
+        <div className="mb-8 overflow-x-auto">
           <Segmented
             options={typeOptions}
             value={selectedType}
             onChange={handleTypeFilter}
-            className="min-w-max"
+            className="!bg-[#18181b] !border !border-[#27272a] !p-2 !rounded-lg min-w-max"
           />
         </div>
 
         {error && (
           <Alert
-            title={error}
+            message={error}
             type="error"
             showIcon
             closable
-            className="mb-6"
+            className="mb-6 !bg-[#18181b] !border-[#27272a]"
           />
         )}
 
         {contentLoading ? (
           <div className="flex items-center justify-center py-20">
-            <Spin size="large" />
+            <Spin size="large" className="text-[#71717a]" />
           </div>
         ) : filteredContents.length === 0 ? (
           <Empty
             description={
               <Space orientation="vertical" size="middle">
-                <Text className="text-gray-500">
+                <Text className="text-[#71717a]">
                   {selectedType === "all"
                     ? "No content yet. Start saving your first resource!"
                     : `No ${selectedType} content found.`}
@@ -163,12 +164,14 @@ function DashboardContent() {
                   type="primary"
                   icon={<PlusOutlined />}
                   onClick={() => setIsModalOpen(true)}
+                  className="!bg-[#fafafa] !text-[#0a0a0a] hover:!bg-[#e4e4e7] !border-none"
                 >
                   Add Your First Content
                 </Button>
               </Space>
             }
             className="py-20"
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
         ) : viewMode === "grid" ? (
           <Row gutter={[24, 24]}>
@@ -185,8 +188,6 @@ function DashboardContent() {
             ))}
           </Space>
         )}
-
-
       </div>
 
       <AddContentModal
@@ -204,7 +205,7 @@ function DashboardContent() {
 
 export default function DashboardPage() {
   return (
-    <Suspense fallback={<Spin size="large" />}>
+    <Suspense fallback={<Spin size="large" className="text-[#71717a]" />}>
       <DashboardContent />
     </Suspense>
   );

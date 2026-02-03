@@ -21,34 +21,28 @@ import {
   FileTextOutlined,
   UserOutlined,
   ArrowLeftOutlined,
+  DatabaseOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 
 const { Title, Text } = Typography;
 
+// Monochrome icon configuration
 const typeConfig = {
   link: {
     icon: <LinkOutlined />,
-    color: "text-green-500",
-    bgColor: "bg-green-50",
     label: "Link",
   },
   tweet: {
     icon: <TwitterOutlined />,
-    color: "text-blue-500",
-    bgColor: "bg-blue-50",
     label: "Tweet",
   },
   youtube: {
     icon: <YoutubeOutlined />,
-    color: "text-red-500",
-    bgColor: "bg-red-50",
     label: "YouTube",
   },
   document: {
     icon: <FileTextOutlined />,
-    color: "text-purple-500",
-    bgColor: "bg-purple-50",
     label: "Document",
   },
 };
@@ -81,29 +75,30 @@ export default function SharePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 flex items-center justify-center">
-        <Spin size="large" />
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <Spin size="large" className="text-[#71717a]" />
       </div>
     );
   }
 
   if (error || !content) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 px-4 py-12">
+      <div className="min-h-screen bg-[#0a0a0a] px-4 py-12">
         <div className="max-w-2xl mx-auto">
           <Button
-            type="link"
+            type="text"
             icon={<ArrowLeftOutlined />}
             onClick={() => router.push("/")}
-            className="mb-4"
+            className="mb-4 text-[#71717a] hover:text-[#fafafa] !border-none"
           >
             Back to Home
           </Button>
           <Alert
-            title="Content Not Found"
+            message="Content Not Found"
             description={error || "This shared link may have expired or been removed."}
             type="error"
             showIcon
+            className="!bg-[#18181b] !border-[#27272a]"
           />
         </div>
       </div>
@@ -118,75 +113,89 @@ export default function SharePage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 px-4 py-12">
+    <div className="min-h-screen bg-[#0a0a0a] px-4 py-12">
       <div className="max-w-2xl mx-auto">
         <Button
-          type="link"
+          type="text"
           icon={<ArrowLeftOutlined />}
           onClick={() => router.push("/")}
-          className="mb-4"
+          className="mb-6 text-[#71717a] hover:text-[#fafafa] !border-none"
         >
           Back to Home
         </Button>
 
-        <Card className="shadow-xl rounded-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-pink-400 to-pink-500 p-6 -m-6 mb-6">
-            <Space orientation="vertical" size="small">
-              <Text className="text-white opacity-90">Shared via Think Store</Text>
-              <Space>
-                <Avatar icon={<UserOutlined />} className="bg-white text-pink-500" />
-                <Text className="text-white font-medium text-lg">
+        <Card 
+          className="bg-[#18181b] border-[#27272a] rounded-lg overflow-hidden"
+          styles={{ body: { padding: 0 } }}
+        >
+          {/* Header Section */}
+          <div className="bg-[#27272a] border-b border-[#3f3f46] p-6">
+            <Space orientation="vertical" size="small" className="w-full">
+              <div className="flex items-center gap-2 mb-2">
+                <DatabaseOutlined className="text-[#71717a]" />
+                <Text className="text-[#a1a1aa]">Shared via Think Store</Text>
+              </div>
+              <div className="flex items-center gap-3">
+                <Avatar className="bg-[#3f3f46] text-[#fafafa] border border-[#52525b]">
+                  {content.user.username[0].toUpperCase()}
+                </Avatar>
+                <Text className="text-[#fafafa] font-medium text-lg">
                   {content.user.username}
                 </Text>
-              </Space>
+              </div>
             </Space>
           </div>
 
-          <Space orientation="vertical" size="large" className="w-full">
-            <div className="flex items-start gap-4">
-              <div
-                className={`w-14 h-14 ${typeInfo.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`}
-              >
-                <span className={`${typeInfo.color} text-2xl`}>{typeInfo.icon}</span>
-              </div>
-              <div className="flex-1">
-                <Tag color="default" className="mb-2">
-                  {typeInfo.label}
-                </Tag>
-                <Title level={3} className="!mb-2">
-                  {content.title}
-                </Title>
-                <Text className="text-gray-500">Shared on {formattedDate}</Text>
-              </div>
-            </div>
-
-            {content.tags.length > 0 && (
-              <div>
-                <Text className="text-gray-500 block mb-2">Tags:</Text>
-                <div className="flex flex-wrap gap-2">
-                  {content.tags.map((tag) => (
-                    <Tag key={tag.id} color="pink" className="text-sm px-3 py-1">
-                      {tag.name}
-                    </Tag>
-                  ))}
+          {/* Content Section */}
+          <div className="p-6">
+            <Space orientation="vertical" size="large" className="w-full">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-[#27272a] rounded-lg flex items-center justify-center flex-shrink-0 border border-[#3f3f46]">
+                  <span className="text-[#fafafa] text-xl">{typeInfo.icon}</span>
+                </div>
+                <div className="flex-1">
+                  <Tag className="mb-2 bg-[#27272a] text-[#a1a1aa] border-[#3f3f46]">
+                    {typeInfo.label}
+                  </Tag>
+                  <Title level={3} className="!mb-2 !text-[#fafafa]">
+                    {content.title}
+                  </Title>
+                  <Text className="text-[#71717a]">Shared on {formattedDate}</Text>
                 </div>
               </div>
-            )}
 
-            <div className="pt-4 border-t border-gray-100">
-              <Text className="text-gray-600 block mb-4">
-                Want to save and organize content like this?
-              </Text>
-              <Button
-                type="primary"
-                size="large"
-                block
-                onClick={() => router.push("/signup")}
-              >
-                Create Your Free Account
-              </Button>
-            </div>
-          </Space>
+              {content.tags.length > 0 && (
+                <div>
+                  <Text className="text-[#71717a] block mb-2">Tags:</Text>
+                  <div className="flex flex-wrap gap-2">
+                    {content.tags.map((tag) => (
+                      <Tag 
+                        key={tag.id} 
+                        className="bg-[#27272a] text-[#a1a1aa] border-[#3f3f46] text-sm px-3 py-1"
+                      >
+                        {tag.name}
+                      </Tag>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="pt-4 border-t border-[#27272a]">
+                <Text className="text-[#a1a1aa] block mb-4">
+                  Want to save and organize content like this?
+                </Text>
+                <Button
+                  type="primary"
+                  size="large"
+                  block
+                  onClick={() => router.push("/signup")}
+                  className="!bg-[#fafafa] !text-[#0a0a0a] hover:!bg-[#e4e4e7] !border-none !rounded-md !font-medium"
+                >
+                  Create Your Free Account
+                </Button>
+              </div>
+            </Space>
+          </div>
         </Card>
       </div>
     </div>
